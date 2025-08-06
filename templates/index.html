@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carlo Bolt Test App</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        .status {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .api-section {
+            margin: 20px 0;
+        }
+        .api-button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 16px;
+        }
+        .api-button:hover {
+            background: #45a049;
+        }
+        .result {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .timestamp {
+            text-align: center;
+            font-size: 0.9em;
+            opacity: 0.8;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Carlo Bolt Test App</h1>
+        
+        <div class="status">
+            <h2>✅ Status do Sistema</h2>
+            <p>Este é um teste completo do sistema Carlo Bolt</p>
+            <p><strong>Deploy:</strong> {{ deploy_time }}</p>
+            <p><strong>Versão:</strong> 1.0.0</p>
+        </div>
+
+        <div class="api-section">
+            <h2>🔧 Testes de API</h2>
+            <button class="api-button" onclick="testStatus()">Testar Status</button>
+            <button class="api-button" onclick="testAPI()">Testar API</button>
+            <button class="api-button" onclick="testHealth()">Testar Health</button>
+            
+            <div id="result" class="result" style="display: none;"></div>
+        </div>
+
+        <div class="timestamp">
+            <p>Deploy realizado em: {{ deploy_time }}</p>
+            <p>Servidor: Carlo Bolt (Python.maurolopes.com.br)</p>
+        </div>
+    </div>
+
+    <script>
+        async function testStatus() {
+            try {
+                const response = await fetch('/api/status');
+                const data = await response.json();
+                showResult('Status API', data);
+            } catch (error) {
+                showResult('Erro Status', error.message);
+            }
+        }
+
+        async function testAPI() {
+            try {
+                const response = await fetch('/api/test');
+                const data = await response.json();
+                showResult('Test API', data);
+            } catch (error) {
+                showResult('Erro Test', error.message);
+            }
+        }
+
+        async function testHealth() {
+            try {
+                const response = await fetch('/health');
+                const data = await response.json();
+                showResult('Health Check', data);
+            } catch (error) {
+                showResult('Erro Health', error.message);
+            }
+        }
+
+        function showResult(title, data) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `📊 ${title}:\n${JSON.stringify(data, null, 2)}`;
+        }
+    </script>
+</body>
+</html> 
